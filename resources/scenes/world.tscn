@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://dr7q143sxltkg"]
+
+[ext_resource type="Script" uid="uid://dfrn1kqbd83fn" path="res://scripts/freecam.gd" id="1_sb0ah"]
+[ext_resource type="PackedScene" uid="uid://cnognod0pcfjq" path="res://resources/scenes/chunk.tscn" id="2_wa1e8"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sb0ah"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_wa1e8"]
+sky_material = SubResource("ProceduralSkyMaterial_sb0ah")
+
+[sub_resource type="Environment" id="Environment_xpjt0"]
+background_mode = 2
+sky = SubResource("Sky_wa1e8")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="World" type="Node3D"]
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="Crosshair" type="ColorRect" parent="GUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(1, 1)
+color = Color(0, 1, 0, 0.49803922)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xpjt0")
+
+[node name="Freecam" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+script = ExtResource("1_sb0ah")
+mouse_sensitivity = 3.0
+speed = 50.0
+metadata/_custom_type_script = "uid://dfrn1kqbd83fn"
+
+[node name="Chunk" parent="." instance=ExtResource("2_wa1e8")]
