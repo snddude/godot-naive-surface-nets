@@ -64,7 +64,6 @@ func _ready() -> void:
 
 
 func _discover_vertices() -> void:
-	# Initialize mesh stuff.
 	var active_voxel_index: int = 0
 	var vertex_index: int = 0
 	var val1: float = 0.0
@@ -87,7 +86,6 @@ func _discover_vertices() -> void:
 	var value := Vector3.ZERO
 	var edge_intersection_points := PackedVector3Array([])
 
-	# Calculate mesh stuff.
 	for x: int in size.x:
 		for y: int in size.y:
 			for z: int in size.z:
@@ -139,7 +137,6 @@ func _discover_vertices() -> void:
 
 
 func _triangulate() -> void:
-	# Initialize triangulation stuff.
 	var vertex_index: int = 0
 	var neighbour1: int = 0
 	var neighbour2: int = 0
@@ -223,7 +220,6 @@ func _triangulate() -> void:
 
 
 func _generate_mesh() -> void:
-	# Generate the mesh.
 	var arrays: Array
 	arrays.resize(Mesh.ARRAY_MAX)
 
