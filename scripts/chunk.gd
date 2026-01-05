@@ -57,11 +57,11 @@ var _indices := PackedInt32Array([])
 
 
 func _ready() -> void:
-	_generate()
+	_discover_vertices()
 	_triangulate()
 
 
-func _generate() -> void:
+func _discover_vertices() -> void:
 	# Initialize mesh stuff.
 	var active_voxel_index: int = 0
 	var vertex_index: int = 0
