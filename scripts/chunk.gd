@@ -66,6 +66,8 @@ func _ready() -> void:
 func _discover_vertices() -> void:
 	var active_voxel_index: int = 0
 	var vertex_index: int = 0
+	var edge_index1: int = 0
+	var edge_index2: int = 0
 	var val1: float = 0.0
 	var val2: float = 0.0
 	var t: float = 0.0
@@ -100,17 +102,18 @@ func _discover_vertices() -> void:
 					voxel_values[i] = _sample_noisev(VOXEL_VERTICES[i] + voxel_global_position)
 
 				for i: int in 12:
-					if not _is_edge_bipolar(
-							voxel_values[VOXEL_EDGE_INDICES[i][0]],
-							voxel_values[VOXEL_EDGE_INDICES[i][1]]):
+					edge_index1 = VOXEL_EDGE_INDICES[i][0]
+					edge_index2 = VOXEL_EDGE_INDICES[i][1]
+
+					if not _is_edge_bipolar(voxel_values[edge_index1], voxel_values[edge_index2]):
 						continue
 
 					voxel_is_active = true
 
-					p1 = VOXEL_VERTICES[VOXEL_EDGE_INDICES[i][0]]
-					p2 = VOXEL_VERTICES[VOXEL_EDGE_INDICES[i][1]]
-					val1 = voxel_values[VOXEL_EDGE_INDICES[i][0]]
-					val2 = voxel_values[VOXEL_EDGE_INDICES[i][1]]
+					p1 = VOXEL_VERTICES[edge_index1]
+					p2 = VOXEL_VERTICES[edge_index2]
+					val1 = voxel_values[edge_index1]
+					val2 = voxel_values[edge_index2]
 					t = (iso_value - val1) / (val2 - val1)
 
 					value = p1 + t * (p2 - p1)
