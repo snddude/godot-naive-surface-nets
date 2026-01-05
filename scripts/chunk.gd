@@ -54,6 +54,7 @@ const QUAD_NEIGHBOUR_VERTEX_ORDERS: Array = [
 var _active_voxels: Dictionary[int, int] = {}
 var _vertices := PackedVector3Array([])
 var _indices := PackedInt32Array([])
+var _normals: PackedVector3Array = []
 
 
 func _ready() -> void:
@@ -129,6 +130,11 @@ func _discover_vertices() -> void:
 				_active_voxels[active_voxel_index] = vertex_index
 
 				_vertices.push_back(voxel_vertex_position + voxel_global_position)
+				_normals.push_back(Vector3(
+					voxel_values[3] - voxel_values[0],
+					voxel_values[4] - voxel_values[0],
+					voxel_values[1] - voxel_values[0],
+				).normalized())
 
 
 func _triangulate() -> void:
@@ -220,15 +226,13 @@ func _triangulate() -> void:
 
 	arrays[Mesh.ARRAY_VERTEX] = _vertices
 	arrays[Mesh.ARRAY_INDEX] = _indices
+	arrays[Mesh.ARRAY_NORMAL] = _normals
 
-	var st := SurfaceTool.new()
+	var arr_mesh := ArrayMesh.new()
+	arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	st.create_from_arrays(arrays, Mesh.PRIMITIVE_TRIANGLES)
-	st.generate_normals()
-
-	mesh_instance.mesh = st.commit()
-	collision_shape.shape = mesh_instance.mesh.create_trimesh_shape()
+	mesh_instance.set_mesh(arr_mesh)
+	collision_shape.set_shape(mesh_instance.mesh.create_trimesh_shape())
 
 	# Cleanup.
 	_active_voxels.clear()
