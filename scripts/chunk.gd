@@ -57,8 +57,8 @@ var _indices := PackedInt32Array([])
 
 
 func _ready() -> void:
-	_discover_vertices()
-	_triangulate()
+	_time(_discover_vertices, "Vertex discovery")
+	_time(_triangulate, "Triangulation")
 
 
 func _discover_vertices() -> void:
@@ -261,3 +261,9 @@ func _get_active_voxel_coordinates(voxel_index: int) -> Vector3:
 			voxel_index % size.x,
 			(voxel_index / size.x) % size.y,
 			voxel_index / (size.x * size.y))
+
+
+func _time(function: Callable, operation: String) -> void:
+	var start_time: int = Time.get_ticks_msec()
+	function.call()
+	print("%s time: %d msec"%[operation, Time.get_ticks_msec() - start_time])
