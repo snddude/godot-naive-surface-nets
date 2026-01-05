@@ -68,6 +68,7 @@ func _discover_vertices() -> void:
 	var val1: float = 0.0
 	var val2: float = 0.0
 	var t: float = 0.0
+	var voxel_is_active: bool = false
 
 	var voxel_values: Array[float]
 	voxel_values.resize(8)
@@ -88,6 +89,7 @@ func _discover_vertices() -> void:
 	for x: int in size.x:
 		for y: int in size.y:
 			for z: int in size.z:
+				voxel_is_active = false
 				edge_intersection_points_sum = Vector3.ZERO
 				edge_intersection_points = PackedVector3Array([])
 
@@ -98,16 +100,12 @@ func _discover_vertices() -> void:
 					voxel_values[i] = _sample_noisev(VOXEL_VERTICES[i] + voxel_global_position)
 
 				for i: int in 12:
-					bipolar_voxel_edges[i] = _is_edge_bipolar(
+					if not _is_edge_bipolar(
 							voxel_values[VOXEL_EDGE_INDICES[i][0]],
-							voxel_values[VOXEL_EDGE_INDICES[i][1]])
-
-				if not bipolar_voxel_edges.has(true):
-					continue
-
-				for i: int in 12:
-					if not bipolar_voxel_edges[i]:
+							voxel_values[VOXEL_EDGE_INDICES[i][1]]):
 						continue
+
+					voxel_is_active = true
 
 					p1 = VOXEL_VERTICES[VOXEL_EDGE_INDICES[i][0]]
 					p2 = VOXEL_VERTICES[VOXEL_EDGE_INDICES[i][1]]
@@ -119,6 +117,9 @@ func _discover_vertices() -> void:
 
 					edge_intersection_points.push_back(value)
 					edge_intersection_points_sum += value
+
+				if not voxel_is_active:
+					continue
 
 				voxel_vertex_position = (
 						edge_intersection_points_sum / edge_intersection_points.size())
