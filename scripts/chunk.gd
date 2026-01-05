@@ -60,6 +60,7 @@ var _normals: PackedVector3Array = []
 func _ready() -> void:
 	_time(_discover_vertices, "Vertex discovery")
 	_time(_triangulate, "Triangulation")
+	_time(_generate_mesh, "Mesh generation")
 
 
 func _discover_vertices() -> void:
@@ -220,6 +221,8 @@ func _triangulate() -> void:
 			_indices.append(v2)
 			_indices.append(v3)
 
+
+func _generate_mesh() -> void:
 	# Generate the mesh.
 	var arrays: Array
 	arrays.resize(Mesh.ARRAY_MAX)
@@ -238,6 +241,7 @@ func _triangulate() -> void:
 	_active_voxels.clear()
 	_vertices.clear()
 	_indices.clear()
+	_normals.clear()
 
 
 func _sample_noise(x: float, y: float, z: float) -> float:
